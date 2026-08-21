@@ -1,4 +1,5 @@
-import { useState, MouseEvent } from "react";
+import { useState } from "react";
+import type { MouseEvent } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import type { IconType } from "react-icons";

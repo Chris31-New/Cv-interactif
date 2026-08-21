@@ -1,4 +1,5 @@
-import { useState, MouseEvent } from "react";
+import { useState } from "react";
+import type { MouseEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Check, Code2, Maximize2 } from "lucide-react";
 
