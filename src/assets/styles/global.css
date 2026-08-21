@@ -1,0 +1,168 @@
+@import "tailwindcss";
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: #030712;
+  color: white;
+  font-family: Inter, sans-serif;
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* =========================
+   GLASS
+========================= */
+
+.glass {
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* =========================
+   GRADIENT TEXT
+========================= */
+
+.gradient-text {
+  background: linear-gradient(
+    90deg,
+    #8b5cf6,
+    #38bdf8,
+    #818cf8
+  );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* =========================
+   GLOW
+========================= */
+
+.glow {
+  box-shadow:
+    0 0 20px rgba(99, 102, 241, 0.35),
+    0 0 80px rgba(99, 102, 241, 0.15);
+}
+
+/* =========================
+   NOISE
+========================= */
+
+.noise::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.05;
+  background-image: url("/noise.png");
+  pointer-events: none;
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #030712;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #6366f1;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #818cf8;
+}
+/* Glow sur les cartes Timeline */
+.timeline-card:hover {
+  transform: translateY(-4px);
+  transition: all .35s ease;
+}
+/* ===== TYPOGRAPHIE ===== */
+
+.title-gradient {
+  background: linear-gradient(
+    90deg,
+    #ffffff 0%,
+    #a855f7 35%,
+    #60a5fa 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.section-title {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 900;
+  color: white;
+  text-shadow:
+    0 0 20px rgba(99, 102, 241, 0.35),
+    0 0 50px rgba(168, 85, 247, 0.15);
+}
+
+.section-subtitle {
+  color: #94a3b8;
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+/* ===== CARTES ===== */
+
+.glass {
+  backdrop-filter: blur(18px);
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.project-card {
+  transition: all 0.35s ease;
+}
+
+.project-card:hover {
+  border-color: rgba(99, 102, 241, 0.5);
+  box-shadow:
+    0 0 30px rgba(99, 102, 241, 0.2),
+    0 0 80px rgba(168, 85, 247, 0.08);
+}
+
+/* ===== BADGES ===== */
+
+.tech-badge {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  transition: .25s;
+}
+
+.tech-badge:hover {
+  background: rgba(99,102,241,.15);
+  border-color: rgba(99,102,241,.45);
+  transform: translateY(-2px);
+}
+
+/* ===== TITRES DES CARTES ===== */
+
+.project-title {
+  color: white;
+  font-size: 2rem;
+  font-weight: 800;
+  text-shadow: 0 0 12px rgba(99,102,241,.4);
+}
+
+.project-description {
+  color: #CBD5E1;
+  line-height: 1.7;
+}
