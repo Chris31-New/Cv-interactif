@@ -1,23 +1,19 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
-let app;
-
 async function bootstrap() {
-  if (!app) {
-    app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule);
 
-    app.enableCors({
-      origin: [
-        "http://localhost:5173",
-        "https://https://cv-interactif-xeno.vercel.app"
-      ],
-    });
+  app.enableCors({
+    origin: [
+      'http://localhost:5173',
+      'https://cv-interactif-xeno.vercel.app',
+    ],
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  });
 
-    await app.init();
-  }
-
-  return app.getHttpAdapter().getInstance();
+  await app.listen(process.env.PORT || 3000);
 }
 
-export default bootstrap();
+bootstrap();
