@@ -1,14 +1,11 @@
 {
   "version": 2,
-  "functions": {
-    "api/index.ts": {
-      "runtime": "@vercel/node"
-    }
-  },
-  "rewrites": [
+  "buildCommand": "npm run vercel-build",
+  "outputDirectory": "dist",
+  "routes": [
     {
-      "source": "/chat",
-      "destination": "/api/index"
+      "src": "/(.*)",
+      "dest": "dist/main.js"
     }
   ]
 }
