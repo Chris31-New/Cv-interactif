@@ -1,16 +1,23 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
+let app;
+
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  if (!app) {
+    app = await NestFactory.create(AppModule);
 
-  app.enableCors({
-    origin: 'http://localhost:5173',
-  });
+    app.enableCors({
+      origin: [
+        "http://localhost:5173",
+        "https://https://cv-interactif-xeno.vercel.app"
+      ],
+    });
 
-  await app.listen(3000);
+    await app.init();
+  }
 
-  console.log('🚀 AURA Backend : http://localhost:3000');
+  return app.getHttpAdapter().getInstance();
 }
 
-bootstrap();
+export default bootstrap();
