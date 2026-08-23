@@ -157,16 +157,4 @@ function Info({ icon: Icon, title, value }: InfoProps) {
   );
 }
 
-type SocialButtonProps = {
-  icon: React.ElementType;
-  label: string;
-};
 
-function SocialButton({ icon: Icon, label }: SocialButtonProps) {
-  return (
-    <button className="glass rounded-xl px-5 py-3 flex items-center gap-3 hover:border-indigo-400 transition">
-      <Icon size={18} />
-      {label}
-    </button>
-  );
-}
