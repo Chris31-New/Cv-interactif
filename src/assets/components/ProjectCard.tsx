@@ -3,6 +3,7 @@ import type { MouseEvent } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import type { IconType } from "react-icons";
+import { FaGithub } from "react-icons/fa6"
 
 type Technology = {
   name: string;
@@ -26,122 +27,134 @@ export default function ProjectCard({
   description,
   image,
   technologies,
+  gradient,
   onOpen,
 }: Props) {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
+  const [mouse, setMouse] = useState({ x: 0, y: 0 });
+  const [hovered, setHovered] = useState(false);
 
   const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    setMousePosition({
+
+    setMouse({
       x: e.clientX - rect.left,
       y: e.clientY - rect.top,
     });
   };
 
   return (
-    <div className="relative group">
-      {/* Halo d'ambiance violet/magenta très néon derrière la carte */}
-      <div
-        className="pointer-events-none absolute -inset-2 rounded-[32px] transition-opacity duration-500 blur-2xl -z-10"
+    <motion.div
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      whileHover={{ y: -10, scale: 1.01 }}
+      transition={{ type: "spring", stiffness: 250, damping: 20 }}
+      className="relative group rounded-[34px]"
+    >
+      {/* Halo extérieur */}
+      <motion.div
+        animate={{ opacity: hovered ? 1 : 0.25 }}
+        className="absolute -inset-3 rounded-[36px] blur-3xl -z-20"
         style={{
-          opacity: isHovered ? 0.9 : 0.2,
-          background: "radial-gradient(circle at 50% 100%, rgba(192, 38, 211, 0.4), rgba(79, 70, 229, 0.3), transparent 70%)",
+          background:
+            "radial-gradient(circle at 50% 100%, rgba(168,85,247,.35), rgba(59,130,246,.25), transparent 70%)",
         }}
       />
 
-      <motion.div
-        onMouseMove={handleMouseMove}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        whileHover={{ y: -6 }}
-        transition={{ type: "spring", stiffness: 250, damping: 25 }}
-        className="relative overflow-hidden rounded-[28px] border border-fuchsia-500/20 bg-gradient-to-b from-[#180e29] via-[#0d0718] to-[#05020a] p-1 shadow-[0_10px_30px_rgba(0,0,0,0.8)] cursor-pointer"
-      >
-        {/* Trait lumineux néon sur le haut de la carte (Cyan / Magenta) */}
-        <div className="absolute top-0 left-10 right-10 h-[1px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-70 group-hover:opacity-100 transition-opacity" />
-        <div className="absolute bottom-0 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-fuchsia-500 to-transparent opacity-50" />
+      {/* Carte */}
+      <div className="relative overflow-hidden rounded-[30px] border border-white/10 bg-[rgba(10,12,24,.75)] backdrop-blur-2xl shadow-[0_15px_40px_rgba(0,0,0,.6)]">
 
-        {/* Halo suiveur de souris rose/cyan */}
+        {/* Glow souris */}
         <div
-          className="pointer-events-none absolute -inset-px transition-opacity duration-300 z-10 rounded-[28px]"
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
           style={{
-            opacity: isHovered ? 1 : 0,
-            background: `radial-gradient(500px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(217, 70, 239, 0.15), rgba(6, 182, 212, 0.1), transparent 50%)`,
+            background: `radial-gradient(450px circle at ${mouse.x}px ${mouse.y}px,
+              rgba(139,92,246,.18),
+              rgba(56,189,248,.08),
+              transparent 60%)`,
           }}
         />
 
-        {/* Bordure réactive ultra lumineuse */}
-        <div
-          className="pointer-events-none absolute -inset-px transition-opacity duration-300 z-20 rounded-[28px]"
-          style={{
-            opacity: isHovered ? 1 : 0,
-            background: `radial-gradient(350px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(236, 72, 153, 0.8), rgba(6, 182, 212, 0.6), transparent 50%)`,
-            maskImage: "linear-gradient(#black, #black) content-box, linear-gradient(#black, #black)",
-            maskComposite: "exclude",
-            WebkitMaskComposite: "xor",
-            padding: "1.5px",
-          }}
-        />
+        {/* Bordure animée */}
+        <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400/80 to-transparent" />
 
-        {/* Contenu principal */}
-        <div className="relative z-30 p-6 space-y-5">
-          {/* Image intégrée dans un cadre néon sombre */}
-          <div className="relative h-52 overflow-hidden rounded-2xl border border-white/10 bg-black/40">
-            <img
-              src={image}
-              alt={title}
-              className="h-full w-full object-cover transition duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0d0718] via-transparent to-transparent opacity-90" />
-            
-            <div className="absolute bottom-3 left-4">
-              <h3 className="text-2xl font-black tracking-wider text-white drop-shadow-[0_2px_10px_rgba(217,70,239,0.5)] uppercase">
-                {title}
-              </h3>
-              <p className="text-fuchsia-300/80 text-xs font-semibold tracking-wide uppercase">
-                {subtitle}
-              </p>
-            </div>
+        <div className="absolute inset-x-16 bottom-0 h-px bg-gradient-to-r from-transparent via-fuchsia-500/80 to-transparent" />
+
+        {/* IMAGE */}
+        <div className="relative h-60 overflow-hidden">
+          <motion.img
+            src={image}
+            alt={title}
+            whileHover={{ scale: 1.08 }}
+            transition={{ duration: 0.7 }}
+            className="h-full w-full object-cover"
+          />
+
+          {/* Dégradé */}
+          <div
+            className={`absolute inset-0 bg-gradient-to-t ${gradient} opacity-90`}
+          />
+
+          {/* Reflet */}
+          <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-60" />
+
+          {/* Infos */}
+          <div className="absolute bottom-5 left-6 right-6">
+            <p className="uppercase tracking-[0.3em] text-xs text-indigo-300 mb-2">
+              {subtitle}
+            </p>
+
+            <h3 className="text-3xl font-black text-white drop-shadow-[0_0_20px_rgba(139,92,246,.35)]">
+              {title}
+            </h3>
           </div>
+        </div>
 
-          <p className="text-slate-300/90 text-sm leading-relaxed font-normal">
-            {description}
-          </p>
+        {/* CONTENU */}
+        <div className="relative z-20 p-6 space-y-6">
+          <p className="text-slate-300 leading-relaxed">{description}</p>
 
-          {/* Badges façon "pill" sombre avec lueur */}
-          <div className="flex flex-wrap gap-2">
+          {/* Technologies */}
+          <div className="flex flex-wrap gap-3">
             {technologies.map((tech) => {
               const Icon = tech.icon;
 
               return (
-                <div
+                <motion.div
                   key={tech.name}
-                  className="flex items-center gap-2 rounded-xl bg-[#120921] px-3 py-1.5 border border-fuchsia-500/20 text-xs font-medium text-slate-200 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]"
+                  whileHover={{ scale: 1.08 }}
+                  className="flex items-center gap-2 rounded-full border border-white/10 bg-slate-900/60 px-3 py-2 hover:border-indigo-400/40 transition-all"
                 >
-                  <Icon color={tech.color} size={15} />
-                  <span>{tech.name}</span>
-                </div>
+                  <Icon size={16} color={tech.color} />
+
+                  <span className="text-xs text-slate-200">
+                    {tech.name}
+                  </span>
+                </motion.div>
               );
             })}
           </div>
 
-          {/* Boutons style Cyberpunk */}
-          <div className="flex gap-3 pt-2">
-            <button
+          {/* Boutons */}
+          <div className="grid grid-cols-[1fr_auto] gap-3 pt-2">
+            <motion.button
+              whileTap={{ scale: 0.97 }}
               onClick={onOpen}
-              className="flex-1 rounded-xl bg-gradient-to-r from-fuchsia-600 to-indigo-600 hover:from-fuchsia-500 hover:to-indigo-500 text-white font-bold py-3 transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(192,38,211,0.4)]"
+              className="glow rounded-2xl bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 py-3 font-semibold text-white flex items-center justify-center gap-2 hover:brightness-110 transition"
             >
-              Découvrir
+              Découvrir le projet
               <ArrowUpRight size={18} />
-            </button>
+            </motion.button>
 
-            <button className="rounded-xl px-5 border border-fuchsia-500/30 bg-[#120921] hover:bg-fuchsia-950/40 hover:border-fuchsia-400 transition text-sm font-semibold text-slate-300 hover:text-white">
-              GitHub
-            </button>
+            <motion.button
+              whileHover={{ scale: 1.08 }}
+              className="glass rounded-2xl px-4 border border-white/10 hover:border-indigo-400 transition"
+            >
+              <FaGithub size={20} className="text-slate-200" />
+            </motion.button>
           </div>
         </div>
-      </motion.div>
-    </div>
+      </div>
+    </motion.div>
   );
 }

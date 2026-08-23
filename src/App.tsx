@@ -8,13 +8,15 @@ import ChatIA from './assets/components/ChatAi';
 import Contact from './assets/components/Contact';
 import Footer from './assets/components/Footer';
 import Background from './assets/components/Background';
+import CursorGlow from './assets/components/CursorGlow';
 
 export default function App() {
   return (
     <div className="relative bg-[#030712] text-white">
+      
 
       <Background />
-
+      <CursorGlow />
       <Navbar />
 
       <main className="relative z-10">
