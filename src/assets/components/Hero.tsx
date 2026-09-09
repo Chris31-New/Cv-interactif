@@ -91,12 +91,13 @@ export default function Hero() {
               transition={{ delay: 0.5 }}
               className="mt-8 text-lg text-slate-300 max-w-xl leading-relaxed"
             >
-              Je développe des applications **React, NestJS et TypeScript**
-              pensées pour offrir une expérience utilisateur moderne, performante
-              et enrichie par l'intelligence artificielle.
+              Développeur Full Stack React • NestJS • TypeScript
+<br />
+<br />
+Je conçois des applications web robustes orientées métier, de l'interface utilisateur jusqu'à l'API, avec une attention particulière portée à l'expérience utilisateur, à la qualité du code et à l'intelligence artificielle.
 
-              <br />
-              <br />
+              
+             
 
             </motion.p>
           </div>
@@ -134,9 +135,14 @@ export default function Hero() {
             className="flex items-center gap-4 text-slate-400"
           >
             <Mail className="text-indigo-400" />
+            <button
+              onClick={() => scrollToSection("contact")}
+              className="hover:text-white transition cursor-pointer"
+            >
             <span className="hover:text-white transition cursor-pointer">
-              contact@christopheautran.dev
+              autran.christophe@gmail.com
             </span>
+            </button>
           </motion.div>
 
           {/* Stats */}

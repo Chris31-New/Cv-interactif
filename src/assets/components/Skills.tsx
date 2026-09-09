@@ -1,95 +1,262 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import SkillCard from "./SkillCard";
-import { skills } from "../data/skills";
+import { motion } from "framer-motion";
+import {
+  Palette,
+  Server,
+  Database,
+  BrainCircuit,
+  Cloud,
+  Wrench,
+} from "lucide-react";
 
-const categories = [
-  "Toutes",
-  "Frontend",
-  "Backend",
-  "Database",
-  "AI",
-  "DevOps",
-  "Tooling",
-  "Tools",
-  "Testing",
+import {
+  SiReact,
+  SiTypescript,
+  SiJavascript,
+  SiTailwindcss,
+  SiFramer,
+  SiVite,
+  SiAxios,
+  SiNestjs,
+  SiNodedotjs,
+  SiExpress,
+  SiPrisma,
+  SiMysql,
+  SiMariadb,
+  SiClaude,
+  SiDocker,
+  SiGit,
+  SiGithub,
+  SiVercel,
+  SiPostman,
+} from "react-icons/si";
+import { BsOpenai } from "react-icons/bs";
+
+type Skill = {
+  name: string;
+  icon: React.ElementType;
+  color: string;
+  level: "Expert" | "Avancé" | "Confirmé" | "Intermédiaire" | "Notions";
+};
+
+type Category = {
+  title: string;
+  description: string;
+  icon: React.ElementType;
+  color: string;
+  skills: Skill[];
+};
+
+const categories: Category[] = [
+  {
+    title: "Front-End",
+    description: "Interfaces modernes, responsives et animées.",
+    icon: Palette,
+    color: "#61DAFB",
+    skills: [
+      { name: "React", icon: SiReact, color: "#61DAFB", level: "Avancé" },
+      { name: "TypeScript", icon: SiTypescript, color: "#3178C6", level: "Avancé" },
+      { name: "JavaScript", icon: SiJavascript, color: "#F7DF1E", level: "Avancé" },
+      { name: "Tailwind CSS", icon: SiTailwindcss, color: "#06B6D4", level: "Avancé" },
+      { name: "Framer Motion", icon: SiFramer, color: "#ffffff", level: "Confirmé" },
+      { name: "Vite", icon: SiVite, color: "#646CFF", level: "Avancé" },
+      { name: "Axios", icon: SiAxios, color: "#5A29E4", level: "Confirmé" },
+    ],
+  },
+  {
+    title: "Back-End",
+    description: "API REST, logique métier et authentification.",
+    icon: Server,
+    color: "#E0234E",
+    skills: [
+      { name: "NestJS", icon: SiNestjs, color: "#E0234E", level: "Avancé" },
+      { name: "Node.js", icon: SiNodedotjs, color: "#339933", level: "Avancé" },
+      { name: "Express", icon: SiExpress, color: "#ffffff", level: "Intermédiaire" },
+      { name: "JWT", icon: Server, color: "#A855F7", level: "Confirmé" },
+      { name: "REST API", icon: Server, color: "#38BDF8", level: "Avancé" },
+    ],
+  },
+  {
+    title: "Data & ORM",
+    description: "Modélisation, relations et persistance des données.",
+    icon: Database,
+    color: "#5A67D8",
+    skills: [
+      { name: "Prisma ORM", icon: SiPrisma, color: "#5A67D8", level: "Avancé" },
+      { name: "MySQL", icon: SiMysql, color: "#4479A1", level: "Confirmé" },
+      { name: "MariaDB", icon: SiMariadb, color: "#003545", level: "Avancé" },
+      { name: "SQL", icon: Database, color: "#38BDF8", level: "Confirmé" },
+    ],
+  },
+  {
+    title: "Intelligence Artificielle",
+    description: "Intégration d'IA générative dans les applications.",
+    icon: BrainCircuit,
+    color: "#10B981",
+    skills: [
+      { name: "OpenAI API", icon: BsOpenai, color: "#ffffff", level: "Confirmé" },
+      { name: "Claude API", icon: SiClaude, color: "#F97316", level: "Confirmé" },
+      { name: "Prompt Engineering", icon: BrainCircuit, color: "#A855F7", level: "Confirmé" },
+    ],
+  },
+  {
+    title: "DevOps & Déploiement",
+    description: "Versioning, conteneurs et déploiement.",
+    icon: Cloud,
+    color: "#38BDF8",
+    skills: [
+      { name: "Docker", icon: SiDocker, color: "#2496ED", level: "Confirmé" },
+      { name: "Vercel", icon: SiVercel, color: "#ffffff", level: "Confirmé" },
+      { name: "Git", icon: SiGit, color: "#F05032", level: "Avancé" },
+      { name: "GitHub", icon: SiGithub, color: "#ffffff", level: "Confirmé" },
+    ],
+  },
+  {
+    title: "Outils",
+    description: "Outils de développement et de test quotidien.",
+    icon: Wrench,
+    color: "#A855F7",
+    skills: [
+      { name: "Postman", icon: SiPostman, color: "#FF6C37", level: "Confirmé" },
+      { name: "Git", icon: SiGit, color: "#F05032", level: "Avancé" },
+      { name: "GitHub", icon: SiGithub, color: "#ffffff", level: "Confirmé" },
+    ],
+  },
 ];
 
+const levelMap = {
+  Expert: 5,
+  Avancé: 4,
+  Confirmé: 3,
+  Intermédiaire: 2,
+  Notions: 1,
+};
+
 export default function Skills() {
-  const [active, setActive] = useState("Toutes");
-
-  const filtered =
-    active === "Toutes"
-      ? skills
-      : skills.filter((skill) => skill.category === active);
-
   return (
-    <section className="relative px-6 py-32 overflow-hidden">
-      {/* Halo géant */}
-      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[550px] w-[550px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400/5 blur-[140px]" />
+    <section
+      id="skills"
+      className="relative py-32 px-6 lg:px-20 overflow-hidden"
+    >
+      {/* Halo arrière-plan */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[700px] w-[700px] rounded-full bg-violet-600/10 blur-[160px]" />
 
-      <div className="relative mx-auto max-w-7xl">
-
-        {/* Header */}
+      <div className="relative z-10 max-w-7xl mx-auto">
+        {/* Titre */}
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: .7 }}
-          className="mb-14 text-center"
+          className="text-center mb-20"
         >
-          <p className="mb-3 text-xs uppercase tracking-[0.45em] text-cyan-400">
-            Expertise
+          <p className="uppercase tracking-[0.35em] text-indigo-300 text-sm mb-4">
+            STACK TECHNIQUE
           </p>
 
-          <h2 className="text-5xl font-bold text-white md:text-6xl">
-            Mon <span className="gradient-text">Stack Technique</span>
+          <h2 className="section-title title-gradient">
+            Mes compétences.
           </h2>
 
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/50">
-            Technologies utilisées sur mes projets React, NestJS, Prisma,
-            OpenAI et architecture full-stack moderne.
+          <p className="section-subtitle mt-6 max-w-2xl mx-auto">
+            Une stack organisée autour du développement Full Stack,
+            de la donnée, de l'intelligence artificielle et du déploiement.
           </p>
         </motion.div>
 
-        {/* Filtres */}
-        <div className="mb-14 flex flex-wrap justify-center gap-3">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActive(cat)}
-              className={`rounded-full border px-5 py-2 text-sm transition-all duration-300
-              ${
-                active === cat
-                  ? "border-cyan-400 bg-cyan-400/10 text-cyan-300 shadow-[0_0_25px_rgba(34,211,238,.2)]"
-                  : "border-white/10 bg-white/5 text-white/50 hover:border-cyan-400/30 hover:text-cyan-300"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
+        {/* Cartes */}
+        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {categories.map((category, index) => {
+            const CategoryIcon = category.icon;
 
-        {/* Grid */}
-        <motion.div
-          layout
-          className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-        >
-          <AnimatePresence mode="popLayout">
-            {filtered.map((skill, index) => (
-              <motion.div
-                layout
-                key={skill.name}
-                initial={{ opacity: 0, y: 25, scale: .95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, scale: .9 }}
-                transition={{ delay: index * 0.03 }}
+            return (
+              <motion.article
+                key={category.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{ delay: index * 0.08 }}
+                whileHover={{ y: -6 }}
+                className="glass rounded-[28px] p-6"
               >
-                <SkillCard {...skill} />
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+                {/* En-tête catégorie */}
+                <div className="flex items-start gap-4">
+                  <div
+                    className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border"
+                    style={{
+                      borderColor: `${category.color}40`,
+                      background: `${category.color}15`,
+                    }}
+                  >
+                    <CategoryIcon
+                      size={22}
+                      style={{ color: category.color }}
+                    />
+                  </div>
+
+                  <div>
+                    <h3 className="text-xl font-bold text-white">
+                      {category.title}
+                    </h3>
+
+                    <p className="mt-1 text-sm text-slate-400">
+                      {category.description}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Skills */}
+                <div className="mt-8 space-y-5">
+                  {category.skills.map((skill) => {
+                    const SkillIcon = skill.icon;
+
+                    return (
+                      <div key={skill.name}>
+                        {/* Nom + Niveau */}
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <SkillIcon
+                              size={17}
+                              style={{ color: skill.color }}
+                            />
+
+                            <span className="text-sm text-slate-200">
+                              {skill.name}
+                            </span>
+                          </div>
+
+                          <span className="text-xs font-medium text-slate-400">
+                            {skill.level}
+                          </span>
+                        </div>
+
+                        {/* Barre par niveau */}
+                        <div className="flex gap-1">
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <motion.div
+                              key={i}
+                              initial={{ opacity: 0, scaleX: 0 }}
+                              whileInView={{ opacity: 1, scaleX: 1 }}
+                              viewport={{ once: true }}
+                              transition={{
+                                delay: i * 0.05,
+                                duration: 0.35,
+                                ease: "easeOut",
+                              }}
+                              className={`h-2 flex-1 rounded-full origin-left ${
+                                i < levelMap[skill.level]
+                                  ? "bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-400 shadow-[0_0_8px_rgba(99,102,241,0.35)]"
+                                  : "bg-white/10"
+                              }`}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </motion.article>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

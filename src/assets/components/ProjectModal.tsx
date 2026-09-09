@@ -1,200 +1,584 @@
-import { useState } from "react";
-import type { MouseEvent } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { X, Check, Code2, Maximize2 } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+
+import {
+  X,
+  ExternalLink,
+  Database,
+  ShieldCheck,
+  Code2,
+} from "lucide-react";
+
+import {
+  SiReact,
+  SiNestjs,
+  SiPrisma,
+  SiMysql,
+} from "react-icons/si";
+import { FaGithub } from "react-icons/fa6";
+
+type Technology = {
+  name: string;
+  icon?: React.ElementType;
+  color?: string;
+};
+
+type CodeScreenshot = {
+  title: string;
+  description: string;
+  image: string;
+};
+
+type ProjectDetails = {
+  title: string;
+  subtitle: string;
+  image: string;
+  description: string;
+
+  features: string[];
+
+  technologies: Technology[];
+
+  architecture: {
+    frontend: string;
+    backend: string;
+    database: string;
+    infrastructure: string;
+    modules: string[];
+  };
+
+  codeScreenshots: CodeScreenshot[];
+
+  github?: string;
+  demo?: string;
+};
 
 type Props = {
   open: boolean;
   onClose: () => void;
-  title: string;
-  image: string;
-  description: string;
-  features: string[];
-  codeScreenshots?: string[]; // Ajout de la prop pour les captures de code
+  project: ProjectDetails | null;
 };
 
 export default function ProjectModal({
   open,
   onClose,
-  title,
-  image,
-  description,
-  features,
-  codeScreenshots = [],
+  project,
 }: Props) {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [selectedScreenshot, setSelectedScreenshot] = useState<string | null>(null);
-
-  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setMousePosition({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
-  };
-
   return (
     <AnimatePresence>
-      {open && (
+      {open && project && (
         <>
-          {/* Overlay sombre avec flou */}
+          {/* ================================================= */}
+          {/* BACKDROP */}
+          {/* ================================================= */}
+
           <motion.div
+            initial={{
+              opacity: 0,
+            }}
+            animate={{
+              opacity: 1,
+            }}
+            exit={{
+              opacity: 0,
+            }}
             onClick={onClose}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/80 backdrop-blur-md z-50"
+            className="fixed inset-0 z-[80] bg-black/80 backdrop-blur-md"
           />
 
-          {/* Conteneur centré */}
+          {/* ================================================= */}
+          {/* MODAL */}
+          {/* ================================================= */}
+
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 30 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 30 }}
-            transition={{ type: "spring", stiffness: 250, damping: 25 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 pointer-events-none"
+            initial={{
+              opacity: 0,
+              y: 40,
+              scale: 0.96,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+              scale: 1,
+            }}
+            exit={{
+              opacity: 0,
+              y: 20,
+              scale: 0.98,
+            }}
+            transition={{
+              duration: 0.3,
+            }}
+            className="fixed inset-4 md:inset-8 lg:inset-12 z-[90] overflow-y-auto rounded-[32px] border border-white/10 bg-[#070a13]/95 backdrop-blur-2xl shadow-[0_0_100px_rgba(99,102,241,.2)]"
           >
-            {/* Wrapper pour l'effet de halo d'ambiance derrière */}
-            <div className="relative w-full max-w-4xl pointer-events-auto">
-              
-              {/* Halo néon d'ambiance projeté derrière la modale */}
-              <div className="pointer-events-none absolute -inset-3 rounded-[36px] bg-gradient-to-r from-fuchsia-600/30 via-purple-600/20 to-cyan-500/30 blur-2xl -z-10" />
+            {/* ================================================= */}
+            {/* CLOSE */}
+            {/* ================================================= */}
 
-              {/* Modale Principale */}
-              <div
-                onMouseMove={handleMouseMove}
-                className="relative max-h-[85vh] overflow-y-auto rounded-[30px] border border-fuchsia-500/30 bg-gradient-to-b from-[#180e29] via-[#0d0718] to-[#05020a] p-1 shadow-[0_10px_40px_rgba(0,0,0,0.8)] scrollbar-thin scrollbar-thumb-fuchsia-500/20"
+            <div className="sticky top-0 z-30 flex justify-end px-6 pt-6">
+              <button
+                onClick={onClose}
+                className="glass flex h-11 w-11 items-center justify-center rounded-full hover:border-indigo-400 transition"
               >
-                {/* Lignes réactives néon (Haut & Bas) */}
-                <div className="pointer-events-none absolute top-0 left-12 right-12 h-[1px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-80" />
-                <div className="pointer-events-none absolute bottom-0 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-fuchsia-500 to-transparent opacity-60" />
+                <X size={20} />
+              </button>
+            </div>
 
-                {/* Halo suiveur de souris */}
-                <div
-                  className="pointer-events-none absolute -inset-px transition-opacity duration-300 z-10 rounded-[30px]"
-                  style={{
-                    background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(217, 70, 239, 0.12), rgba(6, 182, 212, 0.08), transparent 50%)`,
-                  }}
+            <div className="px-6 pb-12 md:px-10 lg:px-14">
+
+              {/* ================================================= */}
+              {/* HERO PROJET */}
+              {/* ================================================= */}
+
+              <div className="relative overflow-hidden rounded-[28px]">
+
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="h-[260px] md:h-[380px] w-full object-cover"
                 />
 
-                {/* Contenu */}
-                <div className="relative z-20 space-y-6">
-                  {/* Bannière Image */}
-                  <div className="relative h-64 sm:h-72 w-full overflow-hidden rounded-t-[26px] border-b border-white/10 bg-black/40">
-                    <img
-                      src={image}
-                      alt={title}
-                      className="h-full w-full object-cover opacity-90"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0d0718] via-transparent to-transparent opacity-90" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#070a13] via-black/10 to-transparent" />
 
-                    {/* Bouton Fermer sur l'image */}
-                    <button
-                      onClick={onClose}
-                      className="absolute top-4 right-4 rounded-full bg-[#120921]/80 backdrop-blur-md p-2.5 text-slate-300 hover:text-white border border-fuchsia-500/30 hover:border-fuchsia-400 hover:bg-fuchsia-950/60 transition-all shadow-[0_0_15px_rgba(192,38,211,0.3)]"
-                    >
-                      <X size={20} />
-                    </button>
-                  </div>
+                <div className="absolute bottom-6 left-6 md:left-10">
 
-                  {/* Corps de la modale */}
-                  <div className="p-6 sm:p-8 space-y-8 pt-0">
-                    <h2 className="text-3xl sm:text-4xl font-black tracking-wider text-white uppercase drop-shadow-[0_2px_12px_rgba(217,70,239,0.5)]">
-                      {title}
-                    </h2>
+                  <p className="text-xs uppercase tracking-[0.3em] text-indigo-300">
+                    {project.subtitle}
+                  </p>
 
-                    <p className="text-slate-300 leading-relaxed text-sm sm:text-base font-normal">
-                      {description}
-                    </p>
+                  <h2 className="mt-2 text-4xl md:text-6xl font-black text-white">
+                    {project.title}
+                  </h2>
 
-                    {/* Section Fonctionnalités */}
-                    <div className="space-y-3">
-                      <h4 className="text-xs font-bold uppercase tracking-widest text-fuchsia-400">
-                        Fonctionnalités
-                      </h4>
+                </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        {features.map((feature) => (
-                          <div
-                            key={feature}
-                            className="flex items-center gap-3 rounded-xl bg-[#120921] p-4 border border-fuchsia-500/20 text-slate-200 text-sm font-medium shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]"
-                          >
-                            <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-fuchsia-500/10 border border-fuchsia-500/30 text-fuchsia-400">
-                              <Check size={14} />
-                            </div>
-                            <span>{feature}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+              </div>
 
-                    {/* Section Captures du Code (Nouvelle Section) */}
-                    {codeScreenshots.length > 0 && (
-                      <div className="space-y-3 pt-2">
-                        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-cyan-400">
-                          <Code2 size={16} />
-                          <span>Aperçu du Code / Architecture</span>
-                        </div>
+              {/* ================================================= */}
+              {/* DESCRIPTION */}
+              {/* ================================================= */}
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          {codeScreenshots.map((shot, idx) => (
-                            <div
-                              key={idx}
-                              onClick={() => setSelectedScreenshot(shot)}
-                              className="group relative cursor-pointer overflow-hidden rounded-xl border border-cyan-500/20 bg-[#0a0514] p-2 transition-all hover:border-cyan-400/50 hover:shadow-[0_0_20px_rgba(6,182,212,0.25)]"
-                            >
-                              <div className="relative aspect-video w-full overflow-hidden rounded-lg">
-                                <img
-                                  src={shot}
-                                  alt={`Extrait de code ${idx + 1}`}
-                                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                />
-                                <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-[2px]">
-                                  <span className="flex items-center gap-2 rounded-full bg-cyan-500/20 border border-cyan-400 px-3 py-1.5 text-xs font-medium text-cyan-300">
-                                    <Maximize2 size={14} /> Agrandir
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
+              <div className="grid lg:grid-cols-[1fr_320px] gap-10 mt-10">
+
+                <div>
+
+                  <h3 className="text-2xl font-bold text-white">
+                    Présentation
+                  </h3>
+
+                  <p className="mt-4 text-slate-300 leading-relaxed">
+                    {project.description}
+                  </p>
+
+                  <div className="mt-8 flex flex-wrap gap-3">
+
+                    {project.github && (
+                      <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="btn-secondary rounded-xl px-5 py-3 flex items-center gap-2"
+                      >
+                        <FaGithub size={18} />
+                        GitHub
+                      </a>
+                    )}
+
+                    {project.demo && (
+                      <a
+                        href={project.demo}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="btn-primary rounded-xl px-5 py-3 flex items-center gap-2"
+                      >
+                        <ExternalLink size={18} />
+                        Démo
+                      </a>
                     )}
 
                   </div>
+
                 </div>
+
+                {/* =========================== */}
+                {/* RESUME ARCHITECTURE */}
+                {/* =========================== */}
+
+                <div className="glass rounded-3xl p-6">
+
+                  <div className="flex items-center gap-3">
+
+                    <Database
+                      className="text-indigo-400"
+                      size={20}
+                    />
+
+                    <h3 className="font-semibold text-white">
+                      Architecture
+                    </h3>
+
+                  </div>
+
+                  <div className="mt-6 space-y-4 text-sm">
+
+                    <ArchitectureRow
+                      label="Front-End"
+                      value={project.architecture.frontend}
+                    />
+
+                    <ArchitectureRow
+                      label="Back-End"
+                      value={project.architecture.backend}
+                    />
+
+                    <ArchitectureRow
+                      label="Base de données"
+                      value={project.architecture.database}
+                    />
+
+                    <ArchitectureRow
+                      label="Infrastructure"
+                      value={project.architecture.infrastructure}
+                    />
+
+                  </div>
+
+                </div>
+
               </div>
+
+              {/* ================================================= */}
+              {/* ARCHITECTURE COMPLETE */}
+              {/* ================================================= */}
+
+              <div className="mt-16">
+
+                <div className="flex items-center gap-3">
+
+                  <ShieldCheck
+                    className="text-violet-400"
+                    size={22}
+                  />
+
+                  <h3 className="text-2xl font-bold text-white">
+                    Architecture technique
+                  </h3>
+
+                </div>
+
+                <div className="mt-6 overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.02] p-6 md:p-10">
+
+                  <ArchitectureFlow
+                    project={project}
+                  />
+
+                </div>
+
+              </div>
+
+              {/* ================================================= */}
+              {/* CODE SOURCE */}
+              {/* ================================================= */}
+
+              <div className="mt-16">
+
+                <div className="flex items-center gap-3">
+
+                  <Code2
+                    className="text-cyan-400"
+                    size={22}
+                  />
+
+                  <div>
+
+                    <h3 className="text-2xl font-bold text-white">
+                      Code source
+                    </h3>
+
+                    <p className="mt-1 text-sm text-slate-500">
+                      Quelques extraits représentatifs de l'implémentation.
+                    </p>
+
+                  </div>
+
+                </div>
+
+                <div className="mt-8 grid md:grid-cols-2 gap-6">
+
+                  {project.codeScreenshots.map(
+                    (screenshot, index) => (
+                      <motion.div
+                        key={screenshot.title}
+                        initial={{
+                          opacity: 0,
+                          y: 20,
+                        }}
+                        whileInView={{
+                          opacity: 1,
+                          y: 0,
+                        }}
+                        viewport={{
+                          once: true,
+                        }}
+                        transition={{
+                          delay: index * 0.1,
+                        }}
+                        className="group overflow-hidden rounded-[24px] border border-white/10 bg-black/40"
+                      >
+
+                        {/* IMAGE CODE */}
+
+                        <div className="relative overflow-hidden bg-[#0b0f19]">
+
+                          <img
+                            src={screenshot.image}
+                            alt={screenshot.title}
+                            className="w-full object-cover transition duration-700 group-hover:scale-[1.03]"
+                          />
+
+                          {/* overlay */}
+
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+
+                        </div>
+
+                        {/* TEXTE */}
+
+                        <div className="p-5">
+
+                          <h4 className="text-lg font-semibold text-white">
+                            {screenshot.title}
+                          </h4>
+
+                          <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                            {screenshot.description}
+                          </p>
+
+                        </div>
+
+                      </motion.div>
+                    )
+                  )}
+
+                </div>
+
+              </div>
+
+              {/* ================================================= */}
+              {/* FEATURES */}
+              {/* ================================================= */}
+
+              <div className="mt-16">
+
+                <h3 className="text-2xl font-bold text-white">
+                  Fonctionnalités principales
+                </h3>
+
+                <div className="mt-6 grid md:grid-cols-2 gap-4">
+
+                  {project.features.map(
+                    (feature) => (
+                      <div
+                        key={feature}
+                        className="glass rounded-2xl p-5 text-slate-300"
+                      >
+                        {feature}
+                      </div>
+                    )
+                  )}
+
+                </div>
+
+              </div>
+
+              {/* ================================================= */}
+              {/* STACK */}
+              {/* ================================================= */}
+
+              <div className="mt-16">
+
+                <h3 className="text-2xl font-bold text-white">
+                  Stack technique
+                </h3>
+
+                <div className="mt-6 flex flex-wrap gap-3">
+
+                  {project.technologies.map(
+                    (tech) => {
+
+                      const Icon = tech.icon;
+
+                      return (
+                        <div
+                          key={tech.name}
+                          className="glass rounded-full px-4 py-2 flex items-center gap-2"
+                        >
+
+                          {Icon && (
+                            <Icon
+                              size={18}
+                              color={
+                                tech.color || "#ffffff"
+                              }
+                            />
+                          )}
+
+                          <span className="text-sm text-slate-200">
+                            {tech.name}
+                          </span>
+
+                        </div>
+                      );
+                    }
+                  )}
+
+                </div>
+
+              </div>
+
             </div>
           </motion.div>
-
-          {/* Modale d'agrandissement de l'image de code sélectionnée */}
-          <AnimatePresence>
-            {selectedScreenshot && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={() => setSelectedScreenshot(null)}
-                className="fixed inset-0 z-[60] flex items-center justify-center bg-black/90 p-4 backdrop-blur-lg"
-              >
-                <div className="relative max-w-5xl w-full">
-                  <button
-                    onClick={() => setSelectedScreenshot(null)}
-                    className="absolute -top-12 right-0 rounded-full bg-white/10 p-2 text-white hover:bg-white/20 transition-all"
-                  >
-                    <X size={24} />
-                  </button>
-                  <img
-                    src={selectedScreenshot}
-                    alt="Code agrandi"
-                    className="w-full h-auto rounded-2xl border border-cyan-500/30 shadow-[0_0_50px_rgba(6,182,212,0.3)] object-contain max-h-[85vh]"
-                  />
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
         </>
       )}
     </AnimatePresence>
+  );
+}
+
+/* ==========================================================
+   ARCHITECTURE ROW
+========================================================== */
+
+function ArchitectureRow({
+  label,
+  value,
+}: {
+  label: string;
+  value: string;
+}) {
+  return (
+    <div>
+
+      <p className="text-slate-500">
+        {label}
+      </p>
+
+      <p className="mt-1 text-slate-200">
+        {value}
+      </p>
+
+    </div>
+  );
+}
+
+/* ==========================================================
+   ARCHITECTURE FLOW
+========================================================== */
+
+function ArchitectureFlow({
+  project,
+}: {
+  project: ProjectDetails;
+}) {
+  return (
+    <div className="grid md:grid-cols-5 gap-4 items-stretch">
+
+      <ArchitectureNode
+        title="Front-End"
+        value={project.architecture.frontend}
+        color="#61DAFB"
+        icon={SiReact}
+      />
+
+      <ArchitectureArrow />
+
+      <ArchitectureNode
+        title="API"
+        value={project.architecture.backend}
+        color="#E0234E"
+        icon={SiNestjs}
+      />
+
+      <ArchitectureArrow />
+
+      <ArchitectureNode
+        title="ORM"
+        value={project.architecture.database}
+        color="#5A67D8"
+        icon={SiPrisma}
+      />
+
+      <ArchitectureArrow />
+
+      <ArchitectureNode
+        title="Database"
+        value="MySQL"
+        color="#4479A1"
+        icon={SiMysql}
+      />
+
+      <ArchitectureArrow />
+
+      <ArchitectureNode
+        title="Modules métier"
+        value={project.architecture.modules.join(" • ")}
+        color="#A855F7"
+        icon={ShieldCheck}
+      />
+
+    </div>
+  );
+}
+
+/* ==========================================================
+   NODE
+========================================================== */
+
+function ArchitectureNode({
+  title,
+  value,
+  color,
+  icon: Icon,
+}: {
+  title: string;
+  value: string;
+  color: string;
+  icon: React.ElementType;
+}) {
+  return (
+    <div
+      className="rounded-2xl border p-5"
+      style={{
+        borderColor: `${color}35`,
+        background: `${color}08`,
+      }}
+    >
+
+      <Icon
+        size={22}
+        style={{
+          color,
+        }}
+      />
+
+      <h4 className="mt-4 font-semibold text-white">
+        {title}
+      </h4>
+
+      <p className="mt-2 text-xs leading-relaxed text-slate-400">
+        {value}
+      </p>
+
+    </div>
+  );
+}
+
+/* ==========================================================
+   ARROW
+========================================================== */
+
+function ArchitectureArrow() {
+  return (
+    <div className="hidden md:flex items-center justify-center text-slate-600 text-xl">
+      →
+    </div>
   );
 }
