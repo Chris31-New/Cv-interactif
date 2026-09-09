@@ -21,6 +21,7 @@ import {
   SiLeaflet,
   SiStripe,
   SiMysql,
+  SiTailwindcss,
 } from "react-icons/si";
 
 import type { IconType } from "react-icons";
@@ -202,6 +203,11 @@ const projects: Project[] = [
         icon: SiMysql,
         color: "#4479A1",
       },
+      {
+        name: "Tailwind CSS",
+        icon: SiTailwindcss,
+        color: "#06B6D4",
+      }
     ],
 
     architecture: {

@@ -15,6 +15,7 @@ import {
 } from "react-icons/si";
 
 import { BsOpenai } from "react-icons/bs";
+import { FaGithub, FaLinkedin } from "react-icons/fa6";
 
 const floatingTech = [
     {
@@ -217,6 +218,28 @@ export default function Hero() {
                             </span>
                         </button>
                     </motion.div>
+                    {/* Links */}
+                    <div className="mt-8 flex flex-wrap gap-3">
+                                  <a
+                                    href="https://github.com/Chris31-New"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="btn-secondary rounded-xl px-4 py-3 flex items-center gap-2"
+                                  >
+                                    <FaGithub size={18} />
+                                    GitHub
+                                  </a>
+                    
+                                  <a
+                                    href="https://www.linkedin.com/in/christophe-autran-2437b819a/"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="btn-secondary rounded-xl px-4 py-3 flex items-center gap-2"
+                                  >
+                                    <FaLinkedin size={18} color="#0A66C2" />
+                                    LinkedIn
+                                  </a>
+                                </div>
 
                     {/* Stats */}
                     <motion.div
