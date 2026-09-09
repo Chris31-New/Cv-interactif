@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 
-import { X, ExternalLink, Database, ShieldCheck, Code2 } from "lucide-react";
+import { X, Database, ShieldCheck, Code2 } from "lucide-react";
 
 import { SiReact, SiNestjs, SiPrisma, SiMysql } from "react-icons/si";
 import { FaGithub } from "react-icons/fa6";

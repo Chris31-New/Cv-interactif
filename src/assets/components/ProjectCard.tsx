@@ -3,7 +3,6 @@ import type { MouseEvent } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import type { IconType } from "react-icons";
-import { FaGithub } from "react-icons/fa6"
 
 type Technology = {
   name: string;
