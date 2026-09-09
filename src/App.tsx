@@ -25,10 +25,6 @@ export default function App() {
           <Hero />
         </section>
 
-        <section id="about">
-          <About />
-        </section>
-
         <section id="skills">
           <Skills />
         </section>
@@ -49,6 +45,9 @@ export default function App() {
           <Contact />
         </section>
 
+        <section id="about">
+          <About />
+        </section>
       </main>
 
       <Footer />

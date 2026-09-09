@@ -18,7 +18,7 @@ className="fixed top-4 left-1/2 -translate-x-1/2 z-50 glass rounded-full px-6 py
 <nav className="flex items-center gap-6 text-sm">
 
 <span className="font-black gradient-text text-lg">
-Christophe Quilichini
+Christophe Autran
 </span>
 
 {links.map(link=>(
