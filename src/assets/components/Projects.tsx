@@ -155,8 +155,8 @@ const projects: Project[] = [
       },
     ],
 
-    github: "https://github.com/",
-    demo: "https://example.com/",
+    github: "https://github.com/Chris31-New/Evenly",
+    demo: "",
   },
 
   {
@@ -258,8 +258,8 @@ const projects: Project[] = [
       },
     ],
 
-    github: "https://github.com/",
-    demo: "https://example.com/",
+    github: "https://github.com/Chris31-New/PROJET-CDA",
+    demo: "",
   },
 ];
 

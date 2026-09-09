@@ -145,13 +145,6 @@ export default function ProjectCard({
               Découvrir le projet
               <ArrowUpRight size={18} />
             </motion.button>
-
-            <motion.button
-              whileHover={{ scale: 1.08 }}
-              className="glass rounded-2xl px-4 border border-white/10 hover:border-indigo-400 transition"
-            >
-              <FaGithub size={20} className="text-slate-200" />
-            </motion.button>
           </div>
         </div>
       </div>
