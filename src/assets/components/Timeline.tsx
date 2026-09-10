@@ -50,8 +50,7 @@ const timeline: TimelineItem[] = [
     description:
       "Conception d'une application complète permettant la découverte, la réservation et la gestion d'événements.",
     results: [
-      "Développement d'un parcours complet de réservation : recherche, paiement sécurisé, génération de billets QR Code et téléchargement PDF.",
-      "Mise en place d'une architecture full-stack robuste avec authentification JWT, Prisma/MySQL et géolocalisation des événements.",
+      "Formation obtenue avec succès et certification RNCP Niveau 6"
     ],
     skills: [
       "React",
