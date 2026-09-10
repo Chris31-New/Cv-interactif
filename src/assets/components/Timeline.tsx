@@ -27,7 +27,7 @@ const timeline: TimelineItem[] = [
     description:
       "Formation orientée développement front-end, back-end, base de données et conception d'applications web.",
     results: [
-      "Formation obetenue avec succès et certification RNCP Niveau 5",
+      "Formation obtenue avec succès et certification RNCP Niveau 5",
       //"À compléter avec ton second résultat",
     ],
     skills: [
