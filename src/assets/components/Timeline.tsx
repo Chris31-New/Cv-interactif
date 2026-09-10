@@ -50,7 +50,8 @@ const timeline: TimelineItem[] = [
     description:
       "Conception d'une application complète permettant la découverte, la réservation et la gestion d'événements.",
     results: [
-      "Formation obtenue avec succès et certification RNCP Niveau 6"
+      "Développement d'un parcours complet de réservation : recherche, paiement sécurisé, génération de billets QR Code et téléchargement PDF.",
+      "Mise en place d'une architecture full-stack robuste avec authentification JWT, Prisma/MySQL et géolocalisation des événements.",
     ],
     skills: [
       "React",
@@ -71,8 +72,7 @@ const timeline: TimelineItem[] = [
     description:
       "Approfondissement de l'architecture applicative, du développement Full Stack et de la conception d'applications métier.",
     results: [
-      "Développement de projets Full Stack",
-      "Mise en œuvre d'API REST et d'une architecture métier",
+      "Formation obtenue avec succès et certification RNCP Niveau 6",
     ],
     skills: [
       "TypeScript",
